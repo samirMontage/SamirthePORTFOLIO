@@ -434,5 +434,19 @@
         </div>
     </footer>
 
+    <script>
+        const allVideos = document.querySelectorAll('video');
+
+        allVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                allVideos.forEach(otherVideo => {
+                    if (otherVideo !== video) {
+                        otherVideo.pause();
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
