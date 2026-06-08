@@ -7,9 +7,11 @@
     <style>
         :root {
             --accent: #6366f1;
-            --bg: #030303;
-            --card-bg: rgba(255, 255, 255, 0.02);
+            --bg: #020204;
+            --card-bg: rgba(255, 255, 255, 0.01);
             --border: rgba(255, 255, 255, 0.05);
+            --text-muted: #8e8e93;
+            --blue-glow: #4d61fc;
         }
 
         * {
@@ -21,8 +23,7 @@
         }
 
         body {
-            /* Многослойный глубокий градиент для создания кинематографичного объема */
-            background-color: #020204;
+            background-color: var(--bg);
             background-image: 
                 radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 55%),
                 radial-gradient(circle at 100% 40%, rgba(99, 102, 241, 0.03) 0%, transparent 30%),
@@ -33,7 +34,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Эффект зернистости для текстуры поверх градиента */
+        /* Эффект кинозернистости */
         body::after {
             content: "";
             position: fixed;
@@ -51,7 +52,7 @@
             padding: 0 24px;
         }
 
-        /* Премиальная шапка */
+        /* Шапка */
         header {
             position: fixed;
             top: 0; width: 100%;
@@ -95,7 +96,7 @@
 
         /* Главный экран */
         .hero {
-            padding: 240px 0 100px;
+            padding: 220px 0 60px;
             text-align: center;
         }
 
@@ -115,7 +116,7 @@
 
         .hero p {
             font-size: 1.25rem;
-            color: #8e8e93;
+            color: var(--text-muted);
             max-width: 580px;
             margin: 0 auto 48px;
         }
@@ -137,6 +138,49 @@
 
         .btn-primary { background: #fff; color: #000; }
         .btn-primary:hover { transform: scale(1.05); background: #eee; }
+
+        /* Секция цифр/статистики (Из твоего скриншота) */
+        .stats-section {
+            padding: 40px 0 80px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 45px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: 0.4s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .stat-number {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            color: var(--blue-glow);
+            letter-spacing: -1px;
+            margin-bottom: 12px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #55555a;
+            font-weight: 700;
+        }
 
         /* Бегущая строка */
         .marquee {
@@ -166,8 +210,8 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* Секции Портфолио */
-        .portfolio { padding: 100px 0 60px; }
+        /* Портфолио */
+        .portfolio { padding: 100px 0 40px; }
         .portfolio-horizontal { padding: 60px 0 100px; border-top: 1px solid var(--border); }
         
         .section-title {
@@ -187,7 +231,7 @@
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.01);
+            background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 20px;
             overflow: hidden;
@@ -207,11 +251,10 @@
         .video-box.horizontal { aspect-ratio: 16/9; }
         .video-box video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Подписи к горизонтальным видео */
         .card-info {
             padding: 20px;
             border-top: 1px solid var(--border);
-            background: rgba(255, 255, 255, 0.01);
+            background: rgba(255, 255, 255, 0.005);
             flex-grow: 1;
         }
         
@@ -222,7 +265,7 @@
             line-height: 1.4;
         }
 
-        /* Блок программ и направлений */
+        /* Блок программ */
         .stack { padding: 80px 0; border-top: 1px solid var(--border); text-align: center; }
         .stack-list { display: flex; justify-content: center; gap: 50px; margin-top: 20px; flex-wrap: wrap; }
         .stack-item { color: #fff; font-weight: 700; font-size: 1.3rem; letter-spacing: -0.5px; }
@@ -251,7 +294,7 @@
             background: rgba(255,255,255,0.05);
         }
 
-        /* Подвал и кнопки соцсетей */
+        /* Подвал */
         footer { padding: 80px 0; text-align: center; border-top: 1px solid var(--border); }
         footer h3 { font-size: 2rem; margin-bottom: 30px; }
         .email-link { font-size: 1.5rem; color: #fff; text-decoration: none; border-bottom: 1px solid #fff; margin-bottom: 40px; display: inline-block; }
@@ -283,15 +326,16 @@
             background: rgba(99, 102, 241, 0.1);
         }
 
-        /* Адаптивность для мобилок */
+        /* Адаптивность */
         @media (max-width: 768px) {
             header { padding: 16px 0; }
             header .container { flex-direction: column; gap: 12px; }
             nav ul { gap: 20px; }
             .grid { grid-template-columns: 1fr; display: flex; flex-direction: column; }
+            .stats-grid { grid-template-columns: 1fr; gap: 16px; }
             .stack-list { flex-direction: column; gap: 20px; }
             .about-flex { flex-direction: column; text-align: center; }
-            .hero { padding: 180px 0 60px; }
+            .hero { padding: 180px 0 40px; }
             .hero h1 { font-size: 2.5rem; letter-spacing: -1px; }
             .hero p { font-size: 1.1rem; }
             .footer-btns { flex-direction: column; align-items: center; gap: 12px; }
@@ -325,6 +369,25 @@
         </div>
     </section>
 
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">12.6%</div>
+                    <div class="stat-label">Average CTR</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">8.5M</div>
+                    <div class="stat-label">Minutes Watched</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24h</div>
+                    <div class="stat-label">Avg. Turnaround</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <div class="marquee">
         <div class="marquee-track">
             <span>Retention Editing •</span><span>Sound Design •</span><span>Color Grading •</span><span>Viral Motion •</span>
@@ -338,17 +401,17 @@
             <div class="grid">
                 <div class="card">
                     <div class="video-box">
-                        <video controls playsinline><source src="work1.mp4" type="video/mp4"></video>
+                        <video controls playsinline preload="metadata"><source src="work1.mp4" type="video/mp4"></video>
                     </div>
                 </div>
                 <div class="card">
                     <div class="video-box">
-                        <video controls playsinline><source src="work2.mp4" type="video/mp4"></video>
+                        <video controls playsinline preload="metadata"><source src="work2.mp4" type="video/mp4"></video>
                     </div>
                 </div>
                 <div class="card">
                     <div class="video-box">
-                        <video controls playsinline><source src="work3.mp4" type="video/mp4"></video>
+                        <video controls playsinline preload="metadata"><source src="work3.mp4" type="video/mp4"></video>
                     </div>
                 </div>
             </div>
@@ -362,7 +425,7 @@
                 
                 <div class="card">
                     <div class="video-box horizontal">
-                        <video controls playsinline><source src="workhr1.mp4" type="video/mp4"></video>
+                        <video controls playsinline preload="metadata"><source src="workhr1.mp4" type="video/mp4"></video>
                     </div>
                     <div class="card-info">
                         <h3>Говорящая голова</h3>
@@ -371,7 +434,7 @@
                 
                 <div class="card">
                     <div class="video-box horizontal">
-                        <video controls playsinline><source src="workhr2.mp4" type="video/mp4"></video>
+                        <video controls playsinline preload="metadata"><source src="workhr2.mp4" type="video/mp4"></video>
                     </div>
                     <div class="card-info">
                         <h3>Кейс подкаст для DMC tv</h3>
@@ -380,7 +443,7 @@
                 
                 <div class="card">
                     <div class="video-box horizontal">
-                        <video controls playsinline><source src="workhr3.mp4" type="video/mp4"></video>
+                        <video controls playsinline preload="metadata"><source src="workhr3.mp4" type="video/mp4"></video>
                     </div>
                     <div class="card-info">
                         <h3>Говорящая голова</h3>
@@ -396,7 +459,7 @@
             <div class="stack-list">
                 <div class="stack-item">Adobe Premiere Pro</div>
                 <div class="stack-item">After Effects</div>
-                <div class="stack-item">Reels</div>
+                <div class="stack-item">Documentary & Reels</div>
             </div>
         </div>
     </section>
@@ -407,11 +470,12 @@
                 <div class="about-img"><img src="avatar.png" alt="Самир"></div>
                 <div class="about-text">
                     <h2>Обо мне</h2>
-                    <p>Я специализируюсь на создании динамичных Reels, контента для YouTube. Моя цель - создавать не просто красивую картинку, а продуманный визуальный продукт с мощным саунд-дизайном, моушн-графикой и удержанием, который решает задачи вашего личного бренда или бизнеса.</p>
+                    <p>Я специализируюсь на создании динамичных Reels, контента для YouTube. Моя цель - создать не просто красивую картинку, а продуманный визуальный продукт с мощным саунд-дизайном, моушн-графикой и удержанием, который решает задачи вашего личного бренда или бизнеса.</p>
                     
                     <div class="skills">
                         <span>Premiere Pro</span>
                         <span>After Effects</span>
+                        <span>CapCut Pro</span>
                         <span>Sound Design</span>
                         <span>Motion Graphics</span>
                     </div>
