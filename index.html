@@ -12,7 +12,7 @@
         :root {
             --accent: #6366f1;
             --bg: #020204;
-            --card-bg: rgba(255, 255, 255, 0.01);
+            --card-bg: rgba(255, 255, 255, 0.02);
             --border: rgba(255, 255, 255, 0.06);
             --text-muted: #8e8e93;
             --blue-glow: #4d61fc;
@@ -33,7 +33,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Интерактивный живой фон (Glow Blobs) */
+        /* Интерактивный живой фон (Сферы) */
         .glow-blob {
             position: fixed;
             width: 450px;
@@ -42,7 +42,7 @@
             pointer-events: none;
             z-index: -1;
             filter: blur(130px);
-            opacity: 0.45;
+            opacity: 0.35;
             animation: floatBlobs 25s infinite alternate ease-in-out;
         }
         .blob-1 {
@@ -58,11 +58,11 @@
         }
         @keyframes floatBlobs {
             0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(80px, 50px) scale(1.15); }
-            100% { transform: translate(-50px, 90px) scale(0.9); }
+            50% { transform: translate(60px, 40px) scale(1.1); }
+            100% { transform: translate(-40px, 60px) scale(0.95); }
         }
 
-        /* Кинозернистость на фоне */
+        /* Кинозернистость */
         body::after {
             content: "";
             position: fixed;
@@ -80,23 +80,12 @@
             padding: 0 24px;
         }
 
-        /* Безопасная CSS-анимация появления при скролле */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px) scale(0.98);
-            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
-
-        /* Шапка сайта */
+        /* Шапка */
         header {
             position: fixed;
             top: 0; width: 100%;
             z-index: 1000;
-            background: rgba(2, 2, 4, 0.6);
+            background: rgba(2, 2, 4, 0.7);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 20px 0;
@@ -133,16 +122,10 @@
 
         nav a:hover { color: #fff; }
 
-        /* Главный экран (Hero) - Анимация на чистом CSS, без рисков */
+        /* Главный экран */
         .hero {
-            padding: 240px 0 60px;
+            padding: 220px 0 60px;
             text-align: center;
-            animation: heroFadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        @keyframes heroFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero h1 {
@@ -166,7 +149,7 @@
             margin: 0 auto 48px;
         }
 
-        /* Премиальные Неоновые Кнопки */
+        /* Кнопки */
         .hero-btns {
             display: flex;
             justify-content: center;
@@ -174,12 +157,12 @@
         }
 
         .btn {
-            padding: 20px 42px;
-            border-radius: 16px;
+            padding: 18px 38px;
+            border-radius: 14px;
             text-decoration: none;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 1rem;
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: 0.3s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -188,17 +171,468 @@
         .btn-primary { 
             background: linear-gradient(135deg, #4d61fc, #6366f1); 
             color: #fff; 
-            box-shadow: 0 0 35px rgba(77, 97, 252, 0.4);
-            border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 0 30px rgba(77, 97, 252, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         .btn-primary:hover { 
-            transform: translateY(-5px) scale(1.03); 
-            box-shadow: 0 15px 40px rgba(77, 97, 252, 0.7);
-            background: linear-gradient(135deg, #5b6efe, #7275f4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(77, 97, 252, 0.5);
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.03);
             color: #fff;
-            border: 1px
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        /* Статистика */
+        .stats-section {
+            padding: 40px 0 80px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 35px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(99, 102, 241, 0.02);
+        }
+
+        .stat-number {
+            font-size: clamp(2.2rem, 4vw, 3.4rem);
+            font-weight: 800;
+            color: var(--blue-glow);
+            letter-spacing: -1px;
+            margin-bottom: 8px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #727279;
+            font-weight: 700;
+        }
+
+        /* Бегущая строка */
+        .marquee {
+            padding: 35px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            opacity: 0.25;
+        }
+
+        .marquee-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        .marquee-track span {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-right: 60px;
+            text-transform: uppercase;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Портфолио */
+        .portfolio { padding: 90px 0 40px; }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 35px;
+            letter-spacing: -0.5px;
+            background: linear-gradient(180deg, #fff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: rgba(255,255,255,0.12);
+            transform: translateY(-5px);
+        }
+
+        .video-box { aspect-ratio: 9/16; background: #000; width: 100%; }
+        .video-box video { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Фикс горизонтальных видео */
+        .portfolio-horizontal { padding: 50px 0 90px; border-top: 1px solid var(--border); }
+        .video-box.horizontal { aspect-ratio: 16/9; }
+
+        .card-info {
+            padding: 20px;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.002);
+            flex-grow: 1;
+        }
+        
+        .card-info h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #e5e5ea;
+        }
+
+        /* Стек технологий */
+        .stack { padding: 50px 0; border-top: 1px solid var(--border); text-align: center; }
+        .stack-list { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        .stack-item { color: #8e8e93; font-weight: 700; font-size: 1.05rem; }
+
+        /* Обо мне (Стабильный Флекс вместо Bento) */
+        .about { padding: 90px 0; border-top: 1px solid var(--border); }
+        
+        .about-wrapper {
+            display: flex;
+            gap: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .about-profile {
+            flex: 0 0 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .bento-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            object-fit: cover;
+            margin-bottom: 16px;
+        }
+
+        .bento-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.06);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 6px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        .about-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .about-info h2 { font-size: 1.8rem; margin-bottom: 14px; font-weight: 800; }
+        .about-info p { color: #d1d1d6; font-size: 1.05rem; line-height: 1.6; margin-bottom: 24px; }
+
+        .skills-flex { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skills-flex span {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #d1d1d6;
+            font-weight: 600;
+        }
+
+        /* Подвал */
+        footer { padding: 90px 0 60px; text-align: center; border-top: 1px solid var(--border); }
+        footer h3 { font-size: 2rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -1px; }
+        .email-link { font-size: 1.3rem; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 40px; display: inline-block; transition: 0.3s; }
+        .email-link:hover { border-color: #fff; color: var(--blue-glow); }
+        
+        .footer-btns { display: flex; justify-content: center; gap: 15px; }
+
+        .btn-footer-tg {
+            background: linear-gradient(135deg, #24A1DE, #1d82b3);
+            color: #fff;
+            padding: 16px 36px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(36, 161, 222, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-footer-tg:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(36, 161, 222, 0.5); }
+
+        .btn-footer-threads {
+            background: #fff;
+            color: #000;
+            padding: 16px 36px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-footer-threads:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3); }
+
+        /* Адаптивность */
+        @media (max-width: 850px) {
+            .grid, .stats-grid { grid-template-columns: 1fr; }
+            .about-wrapper { flex-direction: column; align-items: center; text-align: center; padding: 30px 20px; }
+            .about-profile { flex: none; margin-bottom: 20px; }
+            .skills-flex { justify-content: center; }
+            header .container { flex-direction: column; gap: 12px; }
+            nav ul { gap: 20px; }
+            .hero { padding: 180px 0 40px; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-btns, .footer-btns { flex-direction: column; align-items: center; gap: 12px; }
+            .btn, .btn-footer-tg, .btn-footer-threads { width: 100%; max-width: 280px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-blob blob-1"></div>
+    <div class="glow-blob blob-2"></div>
+
+    <header>
+        <div class="container">
+            <div class="logo">SamirToCreator</div>
+            <nav>
+                <ul>
+                    <li><a href="#work">Работы</a></li>
+                    <li><a href="#about">Обо мне</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Монтаж, который удерживает внимание и продает</h1>
+            <p>Создание визуального контента высшего уровня для брендов и авторов.</p>
+            <div class="hero-btns">
+                <a href="https://t.me/samircreatorr" target="_blank" class="btn btn-primary">Написать в Telegram</a>
+                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn btn-secondary">Threads</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">9.4%</div>
+                <div class="stat-label">Средний CTR</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3.2 млн</div>
+                <div class="stat-label">Минут просмотра</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">24–48 ч</div>
+                <div class="stat-label">Сроки монтажа</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee">
+        <div class="marquee-track">
+            <span>Retention Editing •</span><span>Sound Design •</span><span>Color Grading •</span><span>Viral Motion •</span>
+            <span>Retention Editing •</span><span>Sound Design •</span><span>Color Grading •</span><span>Viral Motion •</span>
+        </div>
+    </div>
+
+    <section class="portfolio" id="work">
+        <div class="container">
+            <h2 class="section-title">Reels / Короткие видео</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="video-box">
+                        <video controls playsinline preload="metadata"><source src="work1.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="video-box">
+                        <video controls playsinline preload="metadata"><source src="work2.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="video-box">
+                        <video controls playsinline preload="metadata"><source src="work3.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-horizontal">
+        <div class="container">
+            <h2 class="section-title">Горизонтальные форматы</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="video-box horizontal">
+                        <video controls playsinline preload="metadata"><source src="workhr1.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="card-info">
+                        <h3>Говорящая голова</h3>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="video-box horizontal">
+                        <video controls playsinline preload="metadata"><source src="workhr2.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="card-info">
+                        <h3>Кейс подкаст для DMC tv</h3>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="video-box horizontal">
+                        <video controls playsinline preload="metadata"><source src="workhr3.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="card-info">
+                        <h3>Говорящая голова</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stack">
+        <div class="container">
+            <div class="stack-list">
+                <div class="stack-item">Adobe Premiere Pro</div>
+                <div class="stack-item">After Effects</div>
+                <div class="stack-item">Documentary & Reels</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">Продакшен</h2>
+            <div class="about-wrapper">
+                
+                <div class="about-profile">
+                    <img src="avatar.png" alt="Самир" class="bento-avatar">
+                    <div class="bento-name">Самир</div>
+                    <div class="status-badge">
+                        <div class="status-dot"></div>
+                        Доступен для проектов
+                    </div>
+                </div>
+
+                <div class="about-info">
+                    <h2>Мой подход к работе</h2>
+                    <p>Я специализируюсь на создании динамичного контента высшего уровня. Моя цель — выдать мощный саунд-дизайн, сочную графику и удержание, которое заставит зрителя досмотреть ролик до самого конца.</p>
+                    <div class="skills-flex">
+                        <span>Premiere Pro</span>
+                        <span>After Effects</span>
+                        <span>CapCut Pro</span>
+                        <span>Sound Design</span>
+                        <span>Motion Graphics</span>
+                        <span>Retention Монтаж</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h3>Давайте создадим что-то крутое</h3>
+            <a href="mailto:samir.worj@gmail.com" class="email-link">samir.worj@gmail.com</a>
+            
+            <div class="footer-btns">
+                <a href="https://t.me/samircreatorr" target="_blank" class="btn-footer-tg">Telegram</a>
+                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn-footer-threads">Threads</a>
+            </div>
+            
+            <p style="margin-top: 60px; color: #16161a; font-size: 0.8rem;">© 2026 SamirToCreator</p>
+        </div>
+    </footer>
+
+    <script>
+        // Автопауза для видео
+        const allVideos = document.querySelectorAll('video');
+        allVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                allVideos.forEach(otherVideo => {
+                    if (otherVideo !== video) {
+                        otherVideo.pause();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
