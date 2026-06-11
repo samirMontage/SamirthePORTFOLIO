@@ -29,7 +29,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Фишка №5: Интерактивный живой фон (Glow Blobs) */
+        /* Интерактивный живой фон (Glow Blobs) */
         .glow-blob {
             position: fixed;
             width: 450px;
@@ -76,10 +76,10 @@
             padding: 0 24px;
         }
 
-        /* Фишка №4: Скролл-анимация появления (Scroll Reveal) */
+        /* Скролл-анимация появления (Scroll Reveal) */
         .reveal {
             opacity: 0;
-            transform: translateY(40px) scale(0.98);
+            transform: translateY(30px) scale(0.98);
             transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
         .reveal.active {
@@ -241,6 +241,12 @@
             text-shadow: 0 0 20px rgba(77, 97, 252, 0.2);
         }
 
+        .stat-number::after {
+            content: '';
+            display: block;
+            width: 0;
+        }
+
         .stat-label {
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -316,7 +322,7 @@
         .video-box { aspect-ratio: 9/16; background: #000; }
         .video-box video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Исправление бага с обрезкой горизонтальных видео */
+        /* Фикс горизонтальных видео */
         .portfolio-horizontal { padding: 60px 0 100px; border-top: 1px solid var(--border); }
         .video-box.horizontal { 
             aspect-ratio: 16/9; 
@@ -340,4 +346,27 @@
         .card-info h3 {
             font-size: 1rem;
             font-weight: 600;
-            color: #e
+            color: #e5e5ea;
+            line-height: 1.4;
+        }
+
+        /* Эффект Bento Grid для секции Обо мне */
+        .about { padding: 100px 0; border-top: 1px solid var(--border); }
+        
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 20px;
+        }
+
+        .bento-item {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 35px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+        }
+        
+        .bento-item:hover
