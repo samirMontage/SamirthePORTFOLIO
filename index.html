@@ -9,9 +9,10 @@
             --accent: #6366f1;
             --bg: #020204;
             --card-bg: rgba(255, 255, 255, 0.01);
-            --border: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.06);
             --text-muted: #8e8e93;
             --blue-glow: #4d61fc;
+            --tg-color: #24A1DE;
         }
 
         * {
@@ -25,7 +26,7 @@
         body {
             background-color: var(--bg);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 55%),
                 radial-gradient(circle at 100% 40%, rgba(99, 102, 241, 0.03) 0%, transparent 30%),
                 radial-gradient(circle at 0% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
             background-attachment: scroll;
@@ -121,64 +122,114 @@
             margin: 0 auto 48px;
         }
 
+        /* Заметные кнопки */
         .hero-btns {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .btn {
-            padding: 18px 35px;
-            border-radius: 12px;
+            padding: 18px 38px;
+            border-radius: 14px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .btn-primary { background: #fff; color: #000; }
-        .btn-primary:hover { transform: scale(1.05); background: #eee; }
+        .btn-primary { 
+            background: linear-gradient(135deg, #4d61fc, #6366f1); 
+            color: #fff; 
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .btn-primary:hover { 
+            transform: translateY(-4px) scale(1.03); 
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+            background: linear-gradient(135deg, #5b6efe, #7275f4);
+        }
 
-        /* Секция цифр/статистики (Из твоего скриншота) */
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.08);
+        }
+
+        /* Секция цифр/статистики с динамикой */
         .stats-section {
             padding: 40px 0 80px;
+            perspective: 1000px; /* Для 3D эффекта наклона */
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+            gap: 28px;
+        }
+
+        /* Анимация плавного вылета карточек при загрузке */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.96);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .stat-card {
-            background: var(--card-bg);
+            background: rgba(255, 255, 255, 0.01);
             border: 1px solid var(--border);
             border-radius: 24px;
-            padding: 45px 20px;
+            padding: 40px 20px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            transition: 0.4s ease;
+            backdrop-filter: blur(15px);
+            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s, background 0.4s, box-shadow 0.4s;
+            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
         }
 
+        /* Разная задержка появления для эффекта волны */
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+
+        /* Интерактивное кручение/наклон и свечение при наведении */
         .stat-card:hover {
-            border-color: rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(99, 102, 241, 0.35);
+            background: rgba(99, 102, 241, 0.03);
+            transform: translateY(-10px) rotateX(5deg) rotateY(-4deg);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
         }
 
         .stat-number {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.3rem, 4.5vw, 3.6rem);
             font-weight: 800;
             color: var(--blue-glow);
             letter-spacing: -1px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1;
+            text-shadow: 0 0 20px rgba(77, 97, 252, 0.2);
         }
 
         .stat-label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #55555a;
+            letter-spacing: 1.2px;
+            color: #727279;
             font-weight: 700;
         }
 
@@ -299,31 +350,46 @@
         footer h3 { font-size: 2rem; margin-bottom: 30px; }
         .email-link { font-size: 1.5rem; color: #fff; text-decoration: none; border-bottom: 1px solid #fff; margin-bottom: 40px; display: inline-block; }
         
+        /* Кнопки в футере */
         .footer-btns {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             margin-top: 10px;
         }
 
-        .btn-social {
-            padding: 14px 32px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+        .btn-footer-tg {
+            background: linear-gradient(135deg, #24A1DE, #1d82b3);
             color: #fff;
+            padding: 16px 36px;
+            border-radius: 30px;
             text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 600;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(36, 161, 222, 0.3);
             transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(5px);
         }
 
-        .btn-social:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
-            transform: translateY(-3px);
-            background: rgba(99, 102, 241, 0.1);
+        .btn-footer-tg:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(36, 161, 222, 0.5);
+        }
+
+        .btn-footer-threads {
+            background: #fff;
+            color: #000;
+            padding: 16px 36px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .btn-footer-threads:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.4);
         }
 
         /* Адаптивность */
@@ -338,8 +404,10 @@
             .hero { padding: 180px 0 40px; }
             .hero h1 { font-size: 2.5rem; letter-spacing: -1px; }
             .hero p { font-size: 1.1rem; }
-            .footer-btns { flex-direction: column; align-items: center; gap: 12px; }
-            .btn-social { width: 100%; max-width: 260px; }
+            .hero-btns { flex-direction: column; align-items: center; gap: 14px; }
+            .btn { width: 100%; max-width: 280px; }
+            .footer-btns { flex-direction: column; align-items: center; gap: 14px; }
+            .btn-footer-tg, .btn-footer-threads { width: 100%; max-width: 280px; }
         }
     </style>
 </head>
@@ -363,8 +431,8 @@
             <h1>Монтаж, который удерживает внимание и продает</h1>
             <p>Создание визуального контента высшего уровня для брендов и авторов.</p>
             <div class="hero-btns">
-                <a href="https://t.me/samirtheMontage" target="_blank" class="btn btn-primary">Написать в Telegram</a>
-                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn" style="border: 1px solid var(--border)">Threads</a>
+                <a href="https://t.me/samircreatorr" target="_blank" class="btn btn-primary">Написать в Telegram</a>
+                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn btn-secondary">Threads</a>
             </div>
         </div>
     </section>
@@ -373,16 +441,16 @@
         <div class="container">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-number">12.6%</div>
-                    <div class="stat-label">Average CTR</div>
+                    <div class="stat-number">9.4%</div>
+                    <div class="stat-label">Средний CTR</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">8.5M</div>
-                    <div class="stat-label">Minutes Watched</div>
+                    <div class="stat-number">3.2 млн</div>
+                    <div class="stat-label">Минут просмотра</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number">24h</div>
-                    <div class="stat-label">Avg. Turnaround</div>
+                    <div class="stat-number">24–48 ч</div>
+                    <div class="stat-label">Сроки монтажа</div>
                 </div>
             </div>
         </div>
@@ -490,8 +558,8 @@
             <a href="mailto:samir.worj@gmail.com" class="email-link">samir.worj@gmail.com</a>
             
             <div class="footer-btns">
-                <a href="https://t.me/samirtheMontage" target="_blank" class="btn-social">Telegram</a>
-                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn-social">Threads</a>
+                <a href="https://t.me/samircreatorr" target="_blank" class="btn-footer-tg">Telegram</a>
+                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn-footer-threads">Threads</a>
             </div>
             
             <p style="margin-top: 60px; color: #333; font-size: 0.8rem;">© 2026 SamirToCreator</p>
