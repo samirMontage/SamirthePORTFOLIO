@@ -12,7 +12,6 @@
             --border: rgba(255, 255, 255, 0.06);
             --text-muted: #8e8e93;
             --blue-glow: #4d61fc;
-            --tg-color: #24A1DE;
         }
 
         * {
@@ -25,24 +24,48 @@
 
         body {
             background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 55%),
-                radial-gradient(circle at 100% 40%, rgba(99, 102, 241, 0.03) 0%, transparent 30%),
-                radial-gradient(circle at 0% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 40%);
-            background-attachment: scroll;
             color: #fff;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Эффект кинозернистости */
+        /* Фишка №5: Интерактивный живой фон (Glow Blobs) */
+        .glow-blob {
+            position: fixed;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+            filter: blur(130px);
+            opacity: 0.6;
+            animation: floatBlobs 25s infinite alternate ease-in-out;
+        }
+        .blob-1 {
+            top: -10%;
+            left: -10%;
+            background: rgba(77, 97, 252, 0.25);
+        }
+        .blob-2 {
+            bottom: 15%;
+            right: -10%;
+            background: rgba(99, 102, 241, 0.18);
+            animation-delay: -7s;
+        }
+        @keyframes floatBlobs {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(80px, 50px) scale(1.15); }
+            100% { transform: translate(-50px, 90px) scale(0.9); }
+        }
+
+        /* Кинозернистость */
         body::after {
             content: "";
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noise_Texture.png');
-            opacity: 0.025;
+            opacity: 0.02;
             pointer-events: none;
             z-index: 9999;
         }
@@ -53,12 +76,23 @@
             padding: 0 24px;
         }
 
+        /* Фишка №4: Скролл-анимация появления (Scroll Reveal) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px) scale(0.98);
+            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
         /* Шапка */
         header {
             position: fixed;
             top: 0; width: 100%;
             z-index: 1000;
-            background: rgba(2, 2, 4, 0.7);
+            background: rgba(2, 2, 4, 0.6);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border);
             padding: 20px 0;
@@ -97,7 +131,7 @@
 
         /* Главный экран */
         .hero {
-            padding: 220px 0 60px;
+            padding: 240px 0 60px;
             text-align: center;
         }
 
@@ -122,7 +156,7 @@
             margin: 0 auto 48px;
         }
 
-        /* Заметные кнопки */
+        /* Заметные Неоновые Кнопки */
         .hero-btns {
             display: flex;
             justify-content: center;
@@ -130,11 +164,11 @@
         }
 
         .btn {
-            padding: 18px 38px;
-            border-radius: 14px;
+            padding: 20px 42px;
+            border-radius: 16px;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 0.95rem;
+            font-weight: 800;
+            font-size: 1rem;
             transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             display: inline-flex;
             align-items: center;
@@ -144,51 +178,40 @@
         .btn-primary { 
             background: linear-gradient(135deg, #4d61fc, #6366f1); 
             color: #fff; 
-            box-shadow: 0 0 25px rgba(99, 102, 241, 0.4);
-            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 35px rgba(77, 97, 252, 0.6);
+            border: 1px solid rgba(255,255,255,0.15);
         }
         
         .btn-primary:hover { 
-            transform: translateY(-4px) scale(1.03); 
-            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+            transform: translateY(-5px) scale(1.03); 
+            box-shadow: 0 15px 40px rgba(77, 97, 252, 0.8);
             background: linear-gradient(135deg, #5b6efe, #7275f4);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.03);
             color: #fff;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.12);
         }
 
-        /* Секция цифр/статистики с динамикой */
+        /* Результаты и Статистика */
         .stats-section {
             padding: 40px 0 80px;
-            perspective: 1000px; /* Для 3D эффекта наклона */
+            perspective: 1000px;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 28px;
-        }
-
-        /* Анимация плавного вылета карточек при загрузке */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.96);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
         }
 
         .stat-card {
@@ -199,19 +222,12 @@
             text-align: center;
             backdrop-filter: blur(15px);
             transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s, background 0.4s, box-shadow 0.4s;
-            animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
         }
 
-        /* Разная задержка появления для эффекта волны */
-        .stat-card:nth-child(1) { animation-delay: 0.1s; }
-        .stat-card:nth-child(2) { animation-delay: 0.2s; }
-        .stat-card:nth-child(3) { animation-delay: 0.3s; }
-
-        /* Интерактивное кручение/наклон и свечение при наведении */
         .stat-card:hover {
             border-color: rgba(99, 102, 241, 0.35);
             background: rgba(99, 102, 241, 0.03);
-            transform: translateY(-10px) rotateX(5deg) rotateY(-4deg);
+            transform: translateY(-8px) rotateX(4deg) rotateY(-3deg);
             box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
         }
 
@@ -240,7 +256,7 @@
             border-bottom: 1px solid var(--border);
             overflow: hidden;
             display: flex;
-            opacity: 0.3;
+            opacity: 0.25;
         }
 
         .marquee-track {
@@ -261,12 +277,11 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* Портфолио */
+        /* Портфолио Вертикальное */
         .portfolio { padding: 100px 0 40px; }
-        .portfolio-horizontal { padding: 60px 0 100px; border-top: 1px solid var(--border); }
         
         .section-title {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             font-weight: 800;
             margin-bottom: 40px;
             letter-spacing: -0.5px;
@@ -284,7 +299,7 @@
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
             transition: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
             backdrop-filter: blur(10px);
@@ -299,286 +314,30 @@
         }
 
         .video-box { aspect-ratio: 9/16; background: #000; }
-        .video-box.horizontal { aspect-ratio: 16/9; }
         .video-box video { width: 100%; height: 100%; object-fit: cover; }
 
+        /* Исправление бага с обрезкой горизонтальных видео */
+        .portfolio-horizontal { padding: 60px 0 100px; border-top: 1px solid var(--border); }
+        .video-box.horizontal { 
+            aspect-ratio: 16/9; 
+            width: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+        .video-box.horizontal video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
         .card-info {
-            padding: 20px;
+            padding: 22px;
             border-top: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.005);
             flex-grow: 1;
         }
         
         .card-info h3 {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
-            color: #d1d1d6;
-            line-height: 1.4;
-        }
-
-        /* Блок программ */
-        .stack { padding: 80px 0; border-top: 1px solid var(--border); text-align: center; }
-        .stack-list { display: flex; justify-content: center; gap: 50px; margin-top: 20px; flex-wrap: wrap; }
-        .stack-item { color: #fff; font-weight: 700; font-size: 1.3rem; letter-spacing: -0.5px; }
-
-        /* О себе */
-        .about { padding: 100px 0; border-top: 1px solid var(--border); }
-        .about-flex { display: flex; align-items: center; gap: 60px; }
-        .about-img { width: 220px; height: 220px; border-radius: 50%; overflow: hidden; border: 4px solid var(--border); flex-shrink: 0; }
-        .about-img img { width: 100%; height: 100%; object-fit: cover; }
-        .about-text h2 { font-size: 2.5rem; margin-bottom: 24px; font-weight: 800; }
-        .about-text p { color: #d1d1d6; font-size: 1.15rem; margin-bottom: 32px; line-height: 1.7; }
-        
-        .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-        .skills span {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: #a1a1aa;
-            transition: all 0.3s ease;
-        }
-        .skills span:hover {
-            border-color: rgba(255,255,255,0.2);
-            color: #fff;
-            background: rgba(255,255,255,0.05);
-        }
-
-        /* Подвал */
-        footer { padding: 80px 0; text-align: center; border-top: 1px solid var(--border); }
-        footer h3 { font-size: 2rem; margin-bottom: 30px; }
-        .email-link { font-size: 1.5rem; color: #fff; text-decoration: none; border-bottom: 1px solid #fff; margin-bottom: 40px; display: inline-block; }
-        
-        /* Кнопки в футере */
-        .footer-btns {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-
-        .btn-footer-tg {
-            background: linear-gradient(135deg, #24A1DE, #1d82b3);
-            color: #fff;
-            padding: 16px 36px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 700;
-            box-shadow: 0 0 20px rgba(36, 161, 222, 0.3);
-            transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .btn-footer-tg:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(36, 161, 222, 0.5);
-        }
-
-        .btn-footer-threads {
-            background: #fff;
-            color: #000;
-            padding: 16px 36px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-size: 1rem;
-            font-weight: 700;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
-            transition: 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        .btn-footer-threads:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.4);
-        }
-
-        /* Адаптивность */
-        @media (max-width: 768px) {
-            header { padding: 16px 0; }
-            header .container { flex-direction: column; gap: 12px; }
-            nav ul { gap: 20px; }
-            .grid { grid-template-columns: 1fr; display: flex; flex-direction: column; }
-            .stats-grid { grid-template-columns: 1fr; gap: 16px; }
-            .stack-list { flex-direction: column; gap: 20px; }
-            .about-flex { flex-direction: column; text-align: center; }
-            .hero { padding: 180px 0 40px; }
-            .hero h1 { font-size: 2.5rem; letter-spacing: -1px; }
-            .hero p { font-size: 1.1rem; }
-            .hero-btns { flex-direction: column; align-items: center; gap: 14px; }
-            .btn { width: 100%; max-width: 280px; }
-            .footer-btns { flex-direction: column; align-items: center; gap: 14px; }
-            .btn-footer-tg, .btn-footer-threads { width: 100%; max-width: 280px; }
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <div class="container">
-            <div class="logo">SamirToCreator</div>
-            <nav>
-                <ul>
-                    <li><a href="#work">Работы</a></li>
-                    <li><a href="#about">Обо мне</a></li>
-                    <li><a href="#contact">Контакты</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <section class="hero">
-        <div class="container">
-            <h1>Монтаж, который удерживает внимание и продает</h1>
-            <p>Создание визуального контента высшего уровня для брендов и авторов.</p>
-            <div class="hero-btns">
-                <a href="https://t.me/samircreatorr" target="_blank" class="btn btn-primary">Написать в Telegram</a>
-                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn btn-secondary">Threads</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="stats-section">
-        <div class="container">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">9.4%</div>
-                    <div class="stat-label">Средний CTR</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">3.2 млн</div>
-                    <div class="stat-label">Минут просмотра</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">24–48 ч</div>
-                    <div class="stat-label">Сроки монтажа</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="marquee">
-        <div class="marquee-track">
-            <span>Retention Editing •</span><span>Sound Design •</span><span>Color Grading •</span><span>Viral Motion •</span>
-            <span>Retention Editing •</span><span>Sound Design •</span><span>Color Grading •</span><span>Viral Motion •</span>
-        </div>
-    </div>
-
-    <section class="portfolio" id="work">
-        <div class="container">
-            <h2 class="section-title">Reels / Короткие видео</h2>
-            <div class="grid">
-                <div class="card">
-                    <div class="video-box">
-                        <video controls playsinline preload="metadata"><source src="work1.mp4" type="video/mp4"></video>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="video-box">
-                        <video controls playsinline preload="metadata"><source src="work2.mp4" type="video/mp4"></video>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="video-box">
-                        <video controls playsinline preload="metadata"><source src="work3.mp4" type="video/mp4"></video>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="portfolio-horizontal">
-        <div class="container">
-            <h2 class="section-title">Горизонтальные форматы</h2>
-            <div class="grid">
-                
-                <div class="card">
-                    <div class="video-box horizontal">
-                        <video controls playsinline preload="metadata"><source src="workhr1.mp4" type="video/mp4"></video>
-                    </div>
-                    <div class="card-info">
-                        <h3>Говорящая голова</h3>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="video-box horizontal">
-                        <video controls playsinline preload="metadata"><source src="workhr2.mp4" type="video/mp4"></video>
-                    </div>
-                    <div class="card-info">
-                        <h3>Кейс подкаст для DMC tv</h3>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="video-box horizontal">
-                        <video controls playsinline preload="metadata"><source src="workhr3.mp4" type="video/mp4"></video>
-                    </div>
-                    <div class="card-info">
-                        <h3>Говорящая голова</h3>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section class="stack">
-        <div class="container">
-            <div class="stack-list">
-                <div class="stack-item">Adobe Premiere Pro</div>
-                <div class="stack-item">After Effects</div>
-                <div class="stack-item">Documentary & Reels</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="about" id="about">
-        <div class="container">
-            <div class="about-flex">
-                <div class="about-img"><img src="avatar.png" alt="Самир"></div>
-                <div class="about-text">
-                    <h2>Обо мне</h2>
-                    <p>Я специализируюсь на создании динамичных Reels, контента для YouTube. Моя цель - создать не просто красивую картинку, а продуманный визуальный продукт с мощным саунд-дизайном, моушн-графикой и удержанием, который решает задачи вашего личного бренда или бизнеса.</p>
-                    
-                    <div class="skills">
-                        <span>Premiere Pro</span>
-                        <span>After Effects</span>
-                        <span>CapCut Pro</span>
-                        <span>Sound Design</span>
-                        <span>Motion Graphics</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer id="contact">
-        <div class="container">
-            <h3>Давайте создадим что-то крутое</h3>
-            <a href="mailto:samir.worj@gmail.com" class="email-link">samir.worj@gmail.com</a>
-            
-            <div class="footer-btns">
-                <a href="https://t.me/samircreatorr" target="_blank" class="btn-footer-tg">Telegram</a>
-                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn-footer-threads">Threads</a>
-            </div>
-            
-            <p style="margin-top: 60px; color: #333; font-size: 0.8rem;">© 2026 SamirToCreator</p>
-        </div>
-    </footer>
-
-    <script>
-        const allVideos = document.querySelectorAll('video');
-
-        allVideos.forEach(video => {
-            video.addEventListener('play', () => {
-                allVideos.forEach(otherVideo => {
-                    if (otherVideo !== video) {
-                        otherVideo.pause();
-                    }
-                });
-            });
-        });
-    </script>
-
-</body>
-</html>
+            color: #e
