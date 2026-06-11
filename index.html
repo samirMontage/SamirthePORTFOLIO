@@ -5,86 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SamirToCreator | Premium Editor</title>
     <style>
-        :root {
-            --accent: #6366f1;
-            --bg: #020204;
-            --card-bg: rgba(255, 255, 255, 0.01);
-            --border: rgba(255, 255, 255, 0.06);
-            --text-muted: #8e8e93;
-            --blue-glow: #4d61fc;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: sans-serif;
             scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--bg);
-            color: #fff;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Интерактивный живой фон (Glow Blobs) */
-        .glow-blob {
-            position: fixed;
-            width: 450px;
-            height: 450px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: -1;
-            filter: blur(130px);
-            opacity: 0.6;
-            animation: floatBlobs 25s infinite alternate ease-in-out;
-        }
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            background: rgba(77, 97, 252, 0.25);
-        }
-        .blob-2 {
-            bottom: 15%;
-            right: -10%;
-            background: rgba(99, 102, 241, 0.18);
-            animation-delay: -7s;
-        }
-        @keyframes floatBlobs {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(80px, 50px) scale(1.15); }
-            100% { transform: translate(-50px, 90px) scale(0.9); }
-        }
-
-        /* Кинозернистость */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noise_Texture.png');
-            opacity: 0.02;
-            pointer-events: none;
-            z-index: 9999;
+            background-color: #0b0b0e;
+            color: #ffffff;
+            line-height: 1.6;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 20px;
         }
 
         /* Шапка */
         header {
-            position: fixed;
-            top: 0; width: 100%;
-            z-index: 1000;
-            background: rgba(2, 2, 4, 0.6);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            background-color: #121216;
+            border-bottom: 1px solid #1f1f27;
             padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         header .container {
@@ -94,196 +42,438 @@
         }
 
         .logo {
-            font-size: 1.4rem;
-            font-weight: 900;
-            letter-spacing: -1px;
-            background: linear-gradient(to bottom, #fff, #888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
         }
 
         nav ul {
             display: flex;
             list-style: none;
-            gap: 30px;
+            gap: 20px;
         }
 
         nav a {
-            color: #a1a1aa;
+            color: #9999a1;
             text-decoration: none;
             font-size: 0.9rem;
-            font-weight: 500;
-            transition: 0.3s;
+            transition: 0.2s;
         }
 
-        nav a:hover { color: #fff; }
+        nav a:hover {
+            color: #ffffff;
+        }
 
-        /* Главный экран */
+        /* Главный блок */
         .hero {
-            padding: 240px 0 60px;
+            padding: 100px 0 60px;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: clamp(2.3rem, 6vw, 4.2rem);
+            font-size: 2.8rem;
             font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -2px;
-            margin-bottom: 24px;
-            background: linear-gradient(180deg, #fff 50%, rgba(255,255,255,0.5));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            max-width: 580px;
-            margin: 0 auto 48px;
+            color: #9999a1;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
         }
 
-        /* Неоновые Кнопки */
         .hero-btns {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .btn {
-            padding: 20px 42px;
-            border-radius: 16px;
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 8px;
             text-decoration: none;
-            font-weight: 800;
-            font-size: 1rem;
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            font-weight: 600;
+            transition: 0.2s;
         }
 
-        .btn-primary { 
-            background: linear-gradient(135deg, #4d61fc, #6366f1); 
-            color: #fff; 
-            box-shadow: 0 0 35px rgba(77, 97, 252, 0.6);
-            border: 1px solid rgba(255,255,255,0.15);
+        .btn-primary {
+            background-color: #4f46e5;
+            color: #ffffff;
         }
-        
-        .btn-primary:hover { 
-            transform: translateY(-5px) scale(1.03); 
-            box-shadow: 0 15px 40px rgba(77, 97, 252, 0.8);
-            background: linear-gradient(135deg, #5b6efe, #7275f4);
+
+        .btn-primary:hover {
+            background-color: #4338ca;
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.03);
-            color: #fff;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(10px);
+            background-color: #1f1f27;
+            color: #ffffff;
+            border: 1px solid #2e2e38;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.5);
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(255, 255, 255, 0.12);
+            background-color: #2e2e38;
         }
 
-        /* Результаты и Статистика */
-        .stats-section {
-            padding: 40px 0 80px;
-            perspective: 1000px;
+        /* Статистика */
+        .stats {
+            padding: 40px 0;
+            border-top: 1px solid #1f1f27;
+            border-bottom: 1px solid #1f1f27;
+            margin-bottom: 60px;
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 28px;
-        }
-
-        .stat-card {
-            background: rgba(255, 255, 255, 0.01);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px 20px;
+            gap: 20px;
             text-align: center;
-            backdrop-filter: blur(15px);
-            transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.4s, background 0.4s, box-shadow 0.4s;
-        }
-
-        .stat-card:hover {
-            border-color: rgba(99, 102, 241, 0.35);
-            background: rgba(99, 102, 241, 0.03);
-            transform: translateY(-8px) rotateX(4deg) rotateY(-3deg);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
         }
 
         .stat-number {
-            font-size: clamp(2.3rem, 4.5vw, 3.6rem);
-            font-weight: 800;
-            color: var(--blue-glow);
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-            line-height: 1;
-            text-shadow: 0 0 20px rgba(77, 97, 252, 0.2);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #4f46e5;
         }
 
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
+            color: #9999a1;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
-            color: #727279;
-            font-weight: 700;
         }
 
-        /* Бегущая строка */
-        .marquee {
+        /* Портфолио */
+        .portfolio-section {
             padding: 40px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            overflow: hidden;
-            display: flex;
-            opacity: 0.25;
         }
 
-        .marquee-track {
-            display: flex;
-            animation: scroll 20s linear infinite;
-            white-space: nowrap;
-        }
-
-        .marquee-track span {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-right: 60px;
-            text-transform: uppercase;
-        }
-
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* Портфолио Вертикальное */
-        .portfolio { padding: 100px 0 40px; }
-        
         .section-title {
-            font-size: 1.9rem;
-            font-weight: 800;
-            margin-bottom: 40px;
-            letter-spacing: -0.5px;
-            background: linear-gradient(180deg, #fff, #a1a1aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 30px;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
+            gap: 20px;
         }
 
         .card {
-            background
+            background-color: #121216;
+            border: 1px solid #1f1f27;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Вертикальные видео (9:16) */
+        .video-box {
+            aspect-ratio: 9/16;
+            background-color: #000000;
+            width: 100%;
+        }
+
+        .video-box video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Горизонтальные видео (16:9) - Тот самый фикс, чтобы ничего не резалось */
+        .video-box.horizontal {
+            aspect-ratio: 16/9;
+        }
+
+        .card-info {
+            padding: 15px;
+        }
+
+        .card-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        /* Стек технологий */
+        .stack {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #1f1f27;
+        }
+
+        .stack-list {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            color: #9999a1;
+            font-weight: 600;
+        }
+
+        /* Обо мне */
+        .about {
+            padding: 60px 0;
+            border-top: 1px solid #1f1f27;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .about-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #1f1f27;
+        }
+
+        .about-text h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .about-text p {
+            color: #9999a1;
+            margin-bottom: 20px;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .skills span {
+            background-color: #1f1f27;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* Подвал */
+        footer {
+            background-color: #121216;
+            border-top: 1px solid #1f1f27;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        footer h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .email {
+            color: #4f46e5;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn-tg {
+            background-color: #24a1de;
+            color: #ffffff;
+        }
+
+        .btn-threads {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Мобильная адаптивность */
+        @media (max-width: 768px) {
+            .grid, .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero-btns, .footer-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">SamirToCreator</div>
+            <nav>
+                <ul>
+                    <li><a href="#work">Работы</a></li>
+                    <li><a href="#about">Обо мне</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Монтаж, который удерживает внимание и продает</h1>
+            <p>Создание визуального контента высшего уровня для брендов и авторов.</p>
+            <div class="hero-btns">
+                <a href="https://t.me/samircreatorr" target="_blank" class="btn btn-primary">Написать в Telegram</a>
+                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn btn-secondary">Threads</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">9.4%</div>
+                    <div class="stat-label">Средний CTR</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3.2 млн</div>
+                    <div class="stat-label">Минут просмотра</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24–48 ч</div>
+                    <div class="stat-label">Сроки монтажа</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section" id="work">
+        <div class="container">
+            <h2 class="section-title">Reels / Короткие видео</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="video-box">
+                        <video controls playsinline preload="metadata"><source src="work1.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="video-box">
+                        <video controls playsinline preload="metadata"><source src="work2.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="video-box">
+                        <video controls playsinline preload="metadata"><source src="work3.mp4" type="video/mp4"></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-section">
+        <div class="container">
+            <h2 class="section-title">Горизонтальные форматы</h2>
+            <div class="grid">
+                
+                <div class="card">
+                    <div class="video-box horizontal">
+                        <video controls playsinline preload="metadata"><source src="workhr1.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="card-info">
+                        <h3>Говорящая голова</h3>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="video-box horizontal">
+                        <video controls playsinline preload="metadata"><source src="workhr2.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="card-info">
+                        <h3>Кейс подкаст для DMC tv</h3>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="video-box horizontal">
+                        <video controls playsinline preload="metadata"><source src="workhr3.mp4" type="video/mp4"></video>
+                    </div>
+                    <div class="card-info">
+                        <h3>Говорящая голова</h3>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="stack">
+        <div class="container">
+            <div class="stack-list">
+                <div>Adobe Premiere Pro</div>
+                <div>After Effects</div>
+                <div>Documentary & Reels</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <img src="avatar.png" alt="Самир" class="about-avatar">
+                <div class="about-text">
+                    <h2>Продакшен</h2>
+                    <p>Я специализируюсь на создании динамичных Reels, Shorts и полноценного контента для YouTube. Моя главная цель — сделать не просто красивую картинку, а проработанный до мелочей визуальный продукт с мощным саунд-дизайном, выразительной моушн-графикой и высоким удержанием аудитории.</p>
+                    <div class="skills">
+                        <span>Premiere Pro</span>
+                        <span>After Effects</span>
+                        <span>CapCut Pro</span>
+                        <span>Sound Design</span>
+                        <span>Motion Graphics</span>
+                        <span>Retention Монтаж</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="container">
+            <h3>Давайте создадим что-то крутое</h3>
+            <a href="mailto:samir.worj@gmail.com" class="email">samir.worj@gmail.com</a>
+            <div class="footer-links">
+                <a href="https://t.me/samircreatorr" target="_blank" class="btn btn-tg">Telegram</a>
+                <a href="https://www.threads.com/@samirtocreator" target="_blank" class="btn btn-threads">Threads</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Умная автопауза: если запускается одно видео, остальные ставятся на паузу
+        const allVideos = document.querySelectorAll('video');
+        allVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                allVideos.forEach(otherVideo => {
+                    if (otherVideo !== video) {
+                        otherVideo.pause();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
