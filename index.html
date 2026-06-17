@@ -11,9 +11,9 @@
     <style>
         :root {
             --accent: #6366f1;
-            /* Изменили глухой черный на глубокий темно-сине-фиолетовый */
+            /* Глубокий темно-сине-фиолетовый */
             --bg: #0b0c16; 
-            /* Карточки теперь чуть светлее, чтобы выделялись */
+            /* Светлые карточки для выделения */
             --card-bg: rgba(255, 255, 255, 0.04);
             --card-hover: rgba(255, 255, 255, 0.07);
             --border: rgba(255, 255, 255, 0.08);
@@ -30,7 +30,6 @@
         }
 
         body {
-            /* Добавили легкий градиент на фон для объема */
             background: radial-gradient(circle at top center, #151728 0%, var(--bg) 100%);
             color: #fff;
             overflow-x: hidden;
@@ -44,7 +43,7 @@
         ::-webkit-scrollbar-thumb { background: #3f3cbb; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #4f46e5; }
 
-        /* Интерактивный живой фон (Сферы) - сделал их чуть ярче */
+        /* Интерактивный живой фон (Сферы) */
         .glow-blob {
             position: fixed;
             width: 500px;
@@ -65,7 +64,7 @@
             100% { transform: translate(-40px, 60px) scale(0.95); }
         }
 
-        /* Кинозернистость - оставляем для текстуры */
+        /* Кинозернистость */
         body::after {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noise_Texture.png');
@@ -344,7 +343,7 @@
             </div>
             <div class="step-card">
                 <div class="step-number">03</div>
-                <h3>Продакшен</h3>
+                <h3>Монтаж и эффекты</h3>
                 <p>Делаю цветокоррекцию, накладываю эффекты, саунд-дизайн и субтитры.</p>
             </div>
             <div class="step-card">
@@ -371,7 +370,7 @@
     <!-- Обо мне -->
     <section class="about" id="about">
         <div class="container">
-            <h2 class="section-title">Продакшен</h2>
+            <h2 class="section-title">Обо мне</h2>
             <div class="about-wrapper">
                 <div class="about-profile">
                     <img src="avatar.png" alt="Самир" class="bento-avatar">
