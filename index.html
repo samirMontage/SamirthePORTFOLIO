@@ -6,7 +6,7 @@
     <title>SamirToCreator | Premium Editor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Unbounded:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -19,6 +19,9 @@
             --border: rgba(255, 255, 255, 0.08);
             --text-muted: #a1a1aa;
             --blue-glow: #60a5fa;
+            /* Три гарнитуры: акцидентная / текстовая / служебная (таймкоды, лейблы) */
+            --font-display: 'Unbounded', 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
         }
 
         * {
@@ -97,44 +100,82 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 2; }
 
-        /* Неоновый разделитель */
-        .glow-line {
-            height: 1px; border: none;
-            background: linear-gradient(90deg, rgba(99,102,241,0) 0%, rgba(99,102,241,0.4) 50%, rgba(99,102,241,0) 100%);
-            margin: 60px 0;
-            position: relative;
-            overflow: visible;
+        /* Фирменный разделитель в виде монтажного таймлайна со скрабом (playhead) */
+        .timeline-divider {
+            margin: 70px auto;
         }
-        .glow-line::after {
+        .timeline-track {
+            position: relative;
+            height: 30px;
+            border-top: 1px solid var(--border);
+        }
+        .timeline-track .tick {
+            position: absolute;
+            top: 0;
+            width: 1px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(-50%);
+        }
+        .timeline-track .tick.major {
+            height: 14px;
+            background: rgba(255, 255, 255, 0.22);
+        }
+        .timeline-track .tick-label {
+            position: absolute;
+            top: 18px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.05em;
+            color: #55555f;
+            transform: translateX(-50%);
+        }
+        .timeline-track .playhead {
+            position: absolute;
+            top: -1px;
+            left: 0%;
+            width: 2px;
+            height: 24px;
+            background: var(--blue-glow);
+            box-shadow: 0 0 14px rgba(96, 165, 250, 0.75);
+            transition: left 2s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .timeline-track .playhead::before {
             content: "";
             position: absolute;
-            top: -1px; left: 50%;
-            width: 120px; height: 3px;
+            top: -4px; left: -4px;
+            width: 10px; height: 10px;
             background: var(--blue-glow);
-            filter: blur(8px);
-            border-radius: 50%;
-            animation: lineSweep 10s ease-in-out infinite;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
         }
-        @keyframes lineSweep {
-            0%, 100% { left: 10%; opacity: 0.3; }
-            50% { left: 90%; opacity: 0.6; }
-        }
+        .timeline-divider.is-visible .playhead { left: calc(100% - 2px); }
 
         /* Шапка */
         header {
-            position: fixed; top: 0; left: 0; width: 100%; max-width: 100vw; z-index: 1000;
-            background: rgba(11, 12, 22, 0.75); backdrop-filter: blur(20px);
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: rgba(11, 12, 22, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); padding: 20px 0;
             opacity: 0;
             animation: headerDrop 1s cubic-bezier(0.22, 1, 0.36, 1) 0.1s forwards;
+            /* Форсируем отдельный композитный слой — убирает дрожание/скачки
+               шапки на iOS/Android при сворачивании адресной строки во время скролла */
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
         }
         @keyframes headerDrop {
-            from { opacity: 0; transform: translateY(-16px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translate3d(0, -16px, 0); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); }
         }
         header .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: nowrap; }
         .logo {
-            font-size: 1.4rem; font-weight: 900; letter-spacing: -1px;
+            font-family: var(--font-display);
+            font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em;
             color: #fff; /* фолбэк-цвет, если браузер не поддерживает background-clip:text */
             white-space: nowrap;
             flex-shrink: 0;
@@ -161,9 +202,40 @@
         nav a:hover::after { width: 100%; }
 
         /* Главный экран */
-        .hero { padding: 220px 0 60px; text-align: center; }
+        .hero {
+            padding: 220px 0 60px; text-align: center;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .hero-bg-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0;
+            transition: opacity 1.4s ease;
+            filter: saturate(1.05) brightness(0.75);
+        }
+        .hero-bg-video.is-ready { opacity: 1; }
+        .hero-bg-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                radial-gradient(circle at top center, rgba(21, 23, 40, 0.55) 0%, rgba(11, 12, 22, 0.88) 65%, var(--bg) 100%),
+                linear-gradient(180deg, rgba(11,12,22,0.35) 0%, rgba(11,12,22,0.75) 100%);
+        }
+        /* Если видео не поддерживается/не грузится — просто остаётся обычный фон body */
+        @media (max-width: 600px) {
+            .hero-bg-video { display: none; }
+            .hero-bg-overlay { background: none; }
+        }
         .hero h1 {
-            font-size: clamp(2.3rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 24px;
+            font-family: var(--font-display);
+            font-size: clamp(2.1rem, 5.6vw, 3.9rem); font-weight: 800; line-height: 1.12; letter-spacing: -0.02em; margin-bottom: 24px;
             color: #fff;
             background: linear-gradient(180deg, #ffffff 30%, #a5a5b4 100%);
             -webkit-background-clip: text;
@@ -182,6 +254,11 @@
         }
         @keyframes heroRise {
             to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-eyebrow {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: heroRise 1s cubic-bezier(0.22, 1, 0.36, 1) 0.2s forwards;
         }
 
         /* Кнопки */
@@ -208,18 +285,18 @@
         .btn:hover span.btn-shine { left: 125%; }
         .btn-primary { background: linear-gradient(135deg, #4d61fc, #6366f1); color: #fff; box-shadow: 0 0 30px rgba(77, 97, 252, 0.35); border: 1px solid rgba(255,255,255,0.15); }
         .btn-primary:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(77, 97, 252, 0.5); }
-        .btn-secondary { background: var(--card-bg); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); }
+        .btn-secondary { background: var(--card-bg); color: #fff; border: 1px solid var(--border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
         .btn-secondary:hover { background: var(--card-hover); border-color: rgba(255, 255, 255, 0.2); transform: translateY(-3px) scale(1.02); }
 
         /* Статистика */
         .stats-section { padding: 40px 0 80px; }
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .stat-card {
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 35px 20px; text-align: center; backdrop-filter: blur(10px);
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 35px 20px; text-align: center; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, background 0.4s, box-shadow 0.4s;
         }
         .stat-card:hover { border-color: rgba(99, 102, 241, 0.4); background: var(--card-hover); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.35); }
-        .stat-number { font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 800; color: var(--blue-glow); letter-spacing: -1px; margin-bottom: 8px; line-height: 1; text-shadow: 0 0 20px rgba(96, 165, 250, 0.3); }
+        .stat-number { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 800; color: var(--blue-glow); letter-spacing: -0.02em; margin-bottom: 8px; line-height: 1; text-shadow: 0 0 20px rgba(96, 165, 250, 0.3); }
         .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #8e8e93; font-weight: 700; }
 
         /* Бегущая строка */
@@ -229,11 +306,56 @@
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* Разделы и заголовки */
-        .portfolio { padding: 90px 0 40px; }
-        .section-title { font-size: 1.8rem; font-weight: 800; margin-bottom: 35px; letter-spacing: -0.5px; background: linear-gradient(180deg, #fff, #a1a1aa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .portfolio { padding: 90px 0 90px; }
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.7rem; font-weight: 700; margin-bottom: 32px; letter-spacing: -0.01em;
+            background: linear-gradient(180deg, #fff, #a1a1aa); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        /* "Служебная" метка в духе таймкодов и лейблов монтажных программ —
+           фирменный структурный элемент сайта */
+        .eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--blue-glow);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .eyebrow::before {
+            content: "";
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: var(--blue-glow);
+            box-shadow: 0 0 8px rgba(96, 165, 250, 0.8);
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
 
         /* Сетка видео */
         .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .portfolio-grid { align-items: start; }
+
+        /* Табы-фильтр портфолио */
+        .portfolio-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 32px; }
+        .tab-btn {
+            font-family: var(--font-mono);
+            font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500;
+            padding: 10px 18px; border-radius: 30px;
+            background: var(--card-bg); border: 1px solid var(--border); color: var(--text-muted);
+            cursor: pointer;
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+        }
+        .tab-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+        .tab-btn.is-active {
+            background: linear-gradient(135deg, #4d61fc, #6366f1); color: #fff; border-color: transparent;
+            box-shadow: 0 0 20px rgba(77, 97, 252, 0.35);
+        }
+        .card.is-filtered-out { display: none; }
         .card {
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s, box-shadow 0.5s;
@@ -242,7 +364,6 @@
         .video-box { aspect-ratio: 9/16; background: #050508; width: 100%; overflow: hidden; }
         .video-box video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .card:hover .video-box video { transform: scale(1.04); }
-        .portfolio-horizontal { padding: 50px 0 90px; border-top: 1px solid var(--border); }
         .video-box.horizontal { aspect-ratio: 16/9; }
         .card-info { padding: 20px; border-top: 1px solid var(--border); background: rgba(0, 0, 0, 0.2); flex-grow: 1; }
         .card-info h3 { font-size: 0.95rem; font-weight: 600; color: #e5e5ea; }
@@ -262,7 +383,8 @@
         }
         .step-card:hover { border-color: rgba(99, 102, 241, 0.4); background: var(--card-hover); transform: translateY(-5px); box-shadow: 0 14px 30px rgba(0,0,0,0.3); }
         .step-number {
-            font-size: 2rem; font-weight: 900; color: #818cf8; margin-bottom: 10px;
+            font-family: var(--font-display);
+            font-size: 1.9rem; font-weight: 800; color: #818cf8; margin-bottom: 10px;
             transition: text-shadow 0.4s;
         }
         .step-card:hover .step-number { text-shadow: 0 0 20px rgba(129, 140, 248, 0.6); }
@@ -271,17 +393,17 @@
 
         /* Обо мне */
         .about { padding: 90px 0; border-top: 1px solid var(--border); }
-        .about-wrapper { display: flex; gap: 30px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(10px); transition: border-color 0.4s; }
+        .about-wrapper { display: flex; gap: 30px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 40px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: border-color 0.4s; }
         .about-wrapper:hover { border-color: rgba(99, 102, 241, 0.25); }
         .about-profile { flex: 0 0 220px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .bento-avatar { width: 120px; height: 120px; border-radius: 50%; border: 2px solid var(--border); object-fit: cover; margin-bottom: 16px; transition: border-color 0.4s, box-shadow 0.4s; }
         .about-profile:hover .bento-avatar { border-color: rgba(99, 102, 241, 0.5); box-shadow: 0 0 30px rgba(99, 102, 241, 0.25); }
-        .bento-name { font-size: 1.3rem; font-weight: 800; margin-bottom: 10px; }
+        .bento-name { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; margin-bottom: 10px; }
         .status-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 12px; border-radius: 30px; font-size: 0.75rem; color: #34d399; font-weight: 600; }
         .status-dot { width: 6px; height: 6px; background: #34d399; border-radius: 50%; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         .about-info { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .about-info h2 { font-size: 1.8rem; margin-bottom: 14px; font-weight: 800; }
+        .about-info h2 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 14px; font-weight: 700; letter-spacing: -0.01em; }
         .about-info p { color: #d1d1d6; font-size: 1.05rem; line-height: 1.6; margin-bottom: 24px; }
         .skills-flex { display: flex; flex-wrap: wrap; gap: 8px; }
         .skills-flex span { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); padding: 8px 14px; border-radius: 10px; font-size: 0.8rem; color: #e5e5ea; font-weight: 600; transition: background 0.3s, border-color 0.3s, transform 0.3s; }
@@ -304,7 +426,7 @@
 
         /* Подвал */
         footer { padding: 90px 0 60px; text-align: center; border-top: 1px solid var(--border); background: rgba(0,0,0,0.1); }
-        footer h3 { font-size: 2rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -1px; }
+        footer h3 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 20px; font-weight: 800; letter-spacing: -0.02em; }
         .email-link { font-size: 1.3rem; color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.2); margin-bottom: 40px; display: inline-block; transition: 0.3s; }
         .email-link:hover { border-color: var(--blue-glow); color: var(--blue-glow); }
         .footer-btns { display: flex; justify-content: center; gap: 15px; }
@@ -338,7 +460,7 @@
             .about-wrapper { flex-direction: column; align-items: center; text-align: center; padding: 30px 20px; }
             .about-profile { flex: none; margin-bottom: 20px; }
             .skills-flex { justify-content: center; }
-            header { padding: 14px 0; }
+            header { padding: 14px 0; background: rgba(11, 12, 22, 0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
             header .container { flex-direction: row; justify-content: space-between; gap: 10px; }
             .logo { font-size: 1.1rem; }
             nav ul { gap: 14px; }
@@ -347,6 +469,7 @@
             .hero h1 { font-size: 2.2rem; }
             .hero-btns, .footer-btns { flex-direction: column; align-items: center; gap: 12px; }
             .btn, .btn-footer-tg, .btn-footer-threads { width: 100%; max-width: 280px; }
+            .timeline-track .tick-label:nth-of-type(4n) { display: none; }
         }
 
         /* Уважаем настройку "уменьшить движение" */
@@ -357,8 +480,8 @@
                 transition-duration: 0.001ms !important;
                 scroll-behavior: auto !important;
             }
-            .hero h1, .hero p, .hero-btns, header { opacity: 1 !important; transform: none !important; filter: none !important; }
-            .reveal { opacity: 1 !important; transform: none !important; }
+            .hero h1, .hero p, .hero-btns, .hero-eyebrow, header { opacity: 1 !important; transform: none !important; filter: none !important; }
+            .reveal, .timeline-divider .playhead { opacity: 1 !important; transform: none !important; left: calc(100% - 2px) !important; }
         }
     </style>
 </head>
@@ -382,7 +505,12 @@
     </header>
 
     <section class="hero">
+        <video class="hero-bg-video" id="heroBgVideo" autoplay muted loop playsinline preload="metadata" poster="hero-poster.jpg">
+            <source src="hero-reel.mp4" type="video/mp4">
+        </video>
+        <div class="hero-bg-overlay"></div>
         <div class="container">
+            <span class="eyebrow hero-eyebrow" style="justify-content:center; width:100%;">VIDEO EDITOR — REELS &amp; LONGFORM</span>
             <h1>Монтаж, который удерживает внимание и продает</h1>
             <p>Создание визуального контента высшего уровня для брендов и авторов.</p>
             <div class="hero-btns">
@@ -418,38 +546,36 @@
 
     <section class="portfolio" id="work">
         <div class="container">
-            <h2 class="section-title reveal">Reels / Короткие видео</h2>
-            <div class="grid">
-                <div class="card reveal reveal-stagger" style="--stagger-delay:0s">
+            <span class="eyebrow reveal">PORTFOLIO</span>
+            <h2 class="section-title reveal">Работы</h2>
+            <div class="portfolio-tabs reveal" role="tablist" aria-label="Фильтр портфолио">
+                <button class="tab-btn is-active" type="button" data-filter="all" role="tab" aria-selected="true">Все</button>
+                <button class="tab-btn" type="button" data-filter="reels" role="tab" aria-selected="false">Reels</button>
+                <button class="tab-btn" type="button" data-filter="horizontal" role="tab" aria-selected="false">Горизонтальные</button>
+            </div>
+            <div class="grid portfolio-grid">
+                <div class="card reveal reveal-stagger" data-category="reels" style="--stagger-delay:0s">
                     <div class="video-box">
                         <video controls playsinline webkit-playsinline preload="none" poster="poster-v1.jpg">
                             <source src="work1.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
-                <div class="card reveal reveal-stagger" style="--stagger-delay:0.1s">
+                <div class="card reveal reveal-stagger" data-category="reels" style="--stagger-delay:0.08s">
                     <div class="video-box">
                         <video controls playsinline webkit-playsinline preload="none" poster="poster-v2.jpg">
                             <source src="work2.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
-                <div class="card reveal reveal-stagger" style="--stagger-delay:0.2s">
+                <div class="card reveal reveal-stagger" data-category="reels" style="--stagger-delay:0.16s">
                     <div class="video-box">
                         <video controls playsinline webkit-playsinline preload="none" poster="poster-v3.jpg">
                             <source src="work3.mp4" type="video/mp4">
                         </video>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="portfolio-horizontal">
-        <div class="container">
-            <h2 class="section-title reveal">Горизонтальные форматы</h2>
-            <div class="grid">
-                <div class="card reveal reveal-stagger" style="--stagger-delay:0s">
+                <div class="card reveal reveal-stagger" data-category="horizontal" style="--stagger-delay:0.24s">
                     <div class="video-box horizontal">
                         <video controls playsinline webkit-playsinline preload="none" poster="poster-h1.jpg">
                             <source src="workhr1.mp4" type="video/mp4">
@@ -457,7 +583,7 @@
                     </div>
                     <div class="card-info"><h3>Говорящая голова</h3></div>
                 </div>
-                <div class="card reveal reveal-stagger" style="--stagger-delay:0.1s">
+                <div class="card reveal reveal-stagger" data-category="horizontal" style="--stagger-delay:0.32s">
                     <div class="video-box horizontal">
                         <video controls playsinline webkit-playsinline preload="none" poster="poster-h2.jpg">
                             <source src="workhr2.mp4" type="video/mp4">
@@ -465,7 +591,7 @@
                     </div>
                     <div class="card-info"><h3>Кейс подкаст для DMC tv</h3></div>
                 </div>
-                <div class="card reveal reveal-stagger" style="--stagger-delay:0.2s">
+                <div class="card reveal reveal-stagger" data-category="horizontal" style="--stagger-delay:0.4s">
                     <div class="video-box horizontal">
                         <video controls playsinline webkit-playsinline preload="none" poster="poster-h3.jpg">
                             <source src="workhr3.mp4" type="video/mp4">
@@ -477,9 +603,23 @@
         </div>
     </section>
 
-    <hr class="glow-line container">
+    <div class="timeline-divider container reveal" aria-hidden="true">
+        <div class="timeline-track">
+            <span class="tick major" style="left:0%"></span>
+            <span class="tick-label" style="left:0%">00:00</span>
+            <span class="tick" style="left:20%"></span>
+            <span class="tick major" style="left:40%"></span>
+            <span class="tick-label" style="left:40%">00:10</span>
+            <span class="tick" style="left:60%"></span>
+            <span class="tick major" style="left:80%"></span>
+            <span class="tick-label" style="left:80%">00:20</span>
+            <span class="tick" style="left:100%"></span>
+            <div class="playhead"></div>
+        </div>
+    </div>
 
     <section class="workflow container" id="workflow">
+        <span class="eyebrow reveal" style="justify-content:center; width:100%;">WORKFLOW</span>
         <h2 class="section-title reveal" style="text-align: center;">Как мы работаем</h2>
         <div class="workflow-grid">
             <div class="step-card reveal reveal-stagger" style="--stagger-delay:0s">
@@ -515,10 +655,24 @@
         </div>
     </section>
 
-    <hr class="glow-line container">
+    <div class="timeline-divider container reveal" aria-hidden="true">
+        <div class="timeline-track">
+            <span class="tick major" style="left:0%"></span>
+            <span class="tick-label" style="left:0%">00:00</span>
+            <span class="tick" style="left:20%"></span>
+            <span class="tick major" style="left:40%"></span>
+            <span class="tick-label" style="left:40%">00:10</span>
+            <span class="tick" style="left:60%"></span>
+            <span class="tick major" style="left:80%"></span>
+            <span class="tick-label" style="left:80%">00:20</span>
+            <span class="tick" style="left:100%"></span>
+            <div class="playhead"></div>
+        </div>
+    </div>
 
     <section class="about" id="about">
         <div class="container">
+            <span class="eyebrow reveal">PROFILE</span>
             <h2 class="section-title reveal">Обо мне</h2>
             <div class="about-wrapper reveal">
                 <div class="about-profile">
@@ -543,6 +697,7 @@
     </section>
 
     <section class="faq-section container" style="max-width: 800px;">
+        <span class="eyebrow reveal" style="justify-content:center; width:100%;">FAQ</span>
         <h2 class="section-title reveal" style="text-align: center;">Частые вопросы</h2>
         <details class="faq-item reveal">
             <summary>Каковы реальные сроки монтажа?</summary>
@@ -560,6 +715,7 @@
 
     <footer id="contact">
         <div class="container">
+            <span class="eyebrow reveal" style="justify-content:center; width:100%;">CONTACT</span>
             <h3 class="reveal">Давайте создадим что-то крутое</h3>
             <a href="mailto:samir.worj@gmail.com" class="email-link reveal">samir.worj@gmail.com</a>
             <div class="footer-btns reveal">
@@ -585,6 +741,35 @@
 
         // Уважаем системную настройку "уменьшить движение"
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Фоновое видео в хиро: аккуратный запуск с фолбэками
+        const heroVideo = document.getElementById('heroBgVideo');
+        if (heroVideo) {
+            const saveData = navigator.connection && navigator.connection.saveData;
+            const slowConnection = navigator.connection && /2g/.test(navigator.connection.effectiveType || '');
+
+            if (prefersReducedMotion || saveData || slowConnection) {
+                // Не грузим и не запускаем видео — остаётся только фон и оверлей
+                heroVideo.removeAttribute('autoplay');
+                heroVideo.remove();
+            } else {
+                heroVideo.addEventListener('loadeddata', () => {
+                    heroVideo.classList.add('is-ready');
+                });
+                heroVideo.addEventListener('error', () => {
+                    // Если файл не найден/не проигрался — тихо убираем видео, фон остаётся тёмным
+                    heroVideo.remove();
+                });
+                // Пауза, когда вкладка не активна — экономим батарею/CPU
+                document.addEventListener('visibilitychange', () => {
+                    if (document.hidden) {
+                        heroVideo.pause();
+                    } else if (!prefersReducedMotion) {
+                        heroVideo.play().catch(() => {});
+                    }
+                });
+            }
+        }
 
         // Мышь-эффекты (прожектор и параллакс) — только на десктопе с точным указателем.
         // На телефонах/планшетах (тач-устройствах или узких экранах) отключаем полностью,
@@ -622,6 +807,25 @@
                 });
             });
         }
+
+        // Табы-фильтр портфолио
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const portfolioCards = document.querySelectorAll('.portfolio-grid .card');
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabBtns.forEach(b => {
+                    b.classList.remove('is-active');
+                    b.setAttribute('aria-selected', 'false');
+                });
+                btn.classList.add('is-active');
+                btn.setAttribute('aria-selected', 'true');
+                const filter = btn.getAttribute('data-filter');
+                portfolioCards.forEach(card => {
+                    const match = filter === 'all' || card.getAttribute('data-category') === filter;
+                    card.classList.toggle('is-filtered-out', !match);
+                });
+            });
+        });
 
         // Скролл-реализация появления блоков через IntersectionObserver
         const revealEls = document.querySelectorAll('.reveal');
